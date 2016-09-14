@@ -135,7 +135,7 @@ export function AuthService($location, $http, $cookies, $q, appConfig, Util, Use
     isLoggedIn(callback?: Function) {
       return Auth.getCurrentUser(undefined)
         .then(user => {
-          var is = user.hasOwnProperty('role');
+          var is = user ? user.hasOwnProperty('role') : false;
           safeCb(callback)(is);
           return is;
         });
@@ -160,9 +160,7 @@ export function AuthService($location, $http, $cookies, $q, appConfig, Util, Use
     hasRole(role, callback?: Function) {
       return Auth.getCurrentUser(undefined)
         .then(user => {
-          var has = user.hasOwnProperty('role')
-            ? hasRole(user.role, role)
-            : false;
+          let has = user && user.hasOwnProperty('role') && hasRole(user.role, role);
 
           safeCb(callback)(has);
           return has;
